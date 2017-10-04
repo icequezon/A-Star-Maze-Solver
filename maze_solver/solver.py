@@ -21,7 +21,8 @@ class MazeSolver():
     def solve(self):
         """
         Solves the maze. Throws exception if maze
-        is not set of if method is not set.
+        is not set of if method is not set. Returns
+        an array of paths from starting point to goal.
         """
         # TODO
         pass
