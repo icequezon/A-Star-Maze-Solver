@@ -27,9 +27,9 @@ class MazeSolver():
         pass
 
 
-class BaseHeuristicMethod():
+class BaseHeuristic():
 
-    def calculate(self, maze):
+    def calculate_heuristic(self, maze):
         """
         Accepts a maze and calculates the heuristics
         of the maze.
