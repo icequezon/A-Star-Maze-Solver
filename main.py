@@ -2,7 +2,7 @@
 
 import sys
 
-from maze_solver.maze_solver import MazeSolver
+from maze_solver.solver import MazeSolver
 from maze_solver.reader import MazeReader
 
 
