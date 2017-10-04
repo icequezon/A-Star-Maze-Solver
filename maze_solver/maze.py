@@ -9,6 +9,14 @@ class Maze():
     # Maze tile values
     TILE_TYPES = []
 
+    def set_maze_size(self, length, width):
+        """
+        Accepts length and width and initializes maze
+        to given size.
+        """
+        # TODO
+        pass
+
     def get_tile(self, x, y):
         """
         Accepts coordinates and returns the specified
