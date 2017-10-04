@@ -38,3 +38,11 @@ class BaseHeuristic():
 
     class Meta:
         abstract = True
+
+
+class ManhattanHeuristic(BaseHeuristic):
+    pass
+
+
+class StraightHeuristic(BaseHeuristic):
+    pass
