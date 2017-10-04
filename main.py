@@ -13,8 +13,8 @@ def run(args):
         reader = MazeReader()
         maze = reader.read(path)
 
-        solver = MazeSolver()
-        solver.solve(maze)
+        solver = MazeSolver(maze)
+        solver.solve()
 
 
 run(sys.argv)
