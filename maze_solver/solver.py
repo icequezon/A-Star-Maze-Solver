@@ -1,4 +1,3 @@
-
 class MazeSolver():
     maze = None
     method = None
@@ -13,7 +12,7 @@ class MazeSolver():
     def calculate_heuristics(self, method):
         """
         Calculate heuristics of the maze. Accepts
-        an argument method.
+        an argument method for heuristic method.
         """
         # TODO
         pass
@@ -26,3 +25,16 @@ class MazeSolver():
         """
         # TODO
         pass
+
+
+class BaseHeuristicMethod():
+
+    def calculate(self, maze):
+        """
+        Accepts a maze and calculates the heuristics
+        of the maze.
+        """
+        pass
+
+    class Meta:
+        abstract = True
