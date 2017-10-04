@@ -55,3 +55,24 @@ class Maze():
         """
         # TODO
         pass
+
+
+class WeightedMaze(Maze):
+    weights = [[]]
+
+    def get_weight(self, x, y):
+        """
+        Accepts coordinates and returns weight
+        the tile in the maze.
+        """
+        return weights[x][y]
+
+    def set_weight(self, x, y, value):
+        """
+        Accepts coordinates and a value and sets tile
+        to weight value. Returns the value of the tile
+        if set is successful.
+        """
+        self.weights[x][y] = value
+
+        return self.weights[x][y]
