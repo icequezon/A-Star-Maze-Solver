@@ -2,7 +2,7 @@ class MazeSolver():
     maze = None
     method = None
 
-    def init(self, maze):
+    def __init__(self, maze):
         """
         Accepts a maze as argument and sets the maze
         to be solved.

@@ -2,7 +2,7 @@
 
 import sys
 
-from maze_solver.maze_solver import MazeSolver
+from maze_solver.solver import MazeSolver
 from maze_solver.reader import MazeReader
 
 
@@ -13,8 +13,8 @@ def run(args):
         reader = MazeReader()
         maze = reader.read(path)
 
-        solver = MazeSolver()
-        solver.solve(maze)
+        solver = MazeSolver(maze)
+        solver.solve()
 
 
 run(sys.argv)
