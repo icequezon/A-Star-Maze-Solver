@@ -4,25 +4,30 @@ class Maze():
     This is a representation of a maze
     """
     # Maze representation
-    maze = [[]]
+    maze = []
 
     # Maze tile values
-    TILE_TYPES = []
+    TILE_TYPES = [
+        '%',
+        ' ',
+        '.',
+        'P'
+    ]
 
     def set_maze_size(self, length, width):
         """
         Accepts length and width and initializes maze
         to given size.
         """
-        # TODO
-        pass
+        for x in range(0, width):
+            self.maze.append(['' for x in range(0, length)])
 
     def get_tile(self, x, y):
         """
         Accepts coordinates and returns the specified
         tile in the maze.
         """
-        return self.maze[x][y]
+        return self.maze[y][x]
 
     def set_tile(self, x, y, value):
         """
@@ -32,21 +37,20 @@ class Maze():
         an exception if value in invalid.
         """
         if self.value_is_valid(value):
-            self.maze[x][y] = value
+            self.maze[y][x] = value
         else:
             # Throw error
             # TODO
-            pass
+            return None
 
-        return self.maze[x][y]
+        return self.maze[y][x]
 
     def value_is_valid(self, value):
         """
         Accepts a value and checks if value is a valid
         maze value.
         """
-        # TODO
-        pass
+        return value in self.TILE_TYPES
 
     def is_traversable(self, x, y):
         """
@@ -55,6 +59,15 @@ class Maze():
         """
         # TODO
         pass
+
+    def __str__(self):
+        maze_string = ''
+        for x in self.maze:
+            for y in x:
+                maze_string = maze_string + y
+            maze_string = maze_string + '\n'
+
+        return maze_string
 
 
 class WeightedMaze(Maze):
@@ -65,7 +78,7 @@ class WeightedMaze(Maze):
         Accepts coordinates and returns weight
         the tile in the maze.
         """
-        return weights[x][y]
+        return self.weights[x][y]
 
     def set_weight(self, x, y, value):
         """
