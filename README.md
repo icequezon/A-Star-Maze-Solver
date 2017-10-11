@@ -11,10 +11,16 @@ To run the solver, run this command in your terminal:
 To solve only a specific maze run:
 
 ```bash
-./main.py file_location_of_file
+./main.py location_of_file
 ```
 
-For Windows user, be sure to add `python` at the start of the command.
+For Windows user, be sure to add `python` at the start of the command and remove `./`.
+
+Example:
+
+```bash
+python main.py location_of_file
+```
 
 ## Python Version:
 
