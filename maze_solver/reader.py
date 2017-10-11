@@ -7,8 +7,8 @@ def read(file_location):
     parses .txt file and returns a maze.
     """
     f = open(file_location, "r")
-
     new_maze = Maze()
+
     x = 0
     y = 0
 

@@ -14,6 +14,12 @@ class Maze():
         'P'
     ]
 
+    def __init__(self):
+        """
+        Initialize variables in class.
+        """
+        self.maze = []
+
     def set_maze_size(self, length, width):
         """
         Accepts length and width and initializes maze
