@@ -124,7 +124,7 @@ class BaseHeuristic():
         pass
 
     class Meta:
-        abtract = True
+        abstract = True
 
 
 class ManhattanHeuristic(BaseHeuristic):
