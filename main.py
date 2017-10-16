@@ -12,10 +12,12 @@ def run(args):
 
     for path in maze_paths:
         maze = read(path)
+        print("File Name: ", path)
         print(maze)
 
         solver = MazeSolver(maze)
         solver.solve()
+        print("=================================================")
 
 
 run(sys.argv)

@@ -37,6 +37,10 @@ class MazeSolver():
         self.maze = method.calculate(self.maze, goal)
 
     def can_be_visited(self, coordinates):
+        """
+        Check if coordinates can be traversed and
+        not in closed_list.
+        """
         x = coordinates[0]
         y = coordinates[1]
 
@@ -46,12 +50,37 @@ class MazeSolver():
         )
 
     def in_closed_list(self, coordinates):
+        """
+        Checks if coordinates is in closed_list.
+        """
         for item in self.closed_list:
             if item[0] == coordinates:
                 return True
         return False
 
+    def in_open_list(self, coordinates):
+        """
+        Checks if coordinate is in open_list.
+        """
+        for item in self.open_list:
+            if item[0] == coordinates:
+                return True
+        return False
+
+    def update_open_list(self, coordinates, cost, heuristics, total):
+        """
+        Updates the value of a node in the open_list.
+        If new total is smaller, update node else just
+        maintain old value.
+        """
+        for item in self.open_list:
+            if item[0] == coordinates and item[3] > total:
+                item = (coordinates, cost, heuristics, total)
+
     def get_smallest(self):
+        """
+        Return the smallest value total in open_list.
+        """
         smallest = self.open_list[0]
 
         for item in self.open_list:
@@ -69,6 +98,10 @@ class MazeSolver():
 
         goal = self.find_goal()
         start = self.find_start()
+
+        if start == (0, 0) or goal == (0, 0):
+            # If there is no start or goal, return.
+            return
 
         # Use Manhattan Heuristics
         method = ManhattanHeuristic()
@@ -91,8 +124,13 @@ class MazeSolver():
                 heuristics = self.maze.get_weight(node[0], node[1])
                 total = cost + heuristics
                 if not self.in_closed_list(node):
-                    # coordinates, cost, heuristics, total
-                    self.open_list.append((node, cost, heuristics, total))
+                    if self.in_open_list(node):
+                        # Check if already in open_list
+                        self.update_open_list(node, cost, heuristics, total)
+                    else:
+                        # coordinates, cost, heuristics, total
+                        self.open_list.append((node, cost, heuristics, total))
+
                     self.parent_list.append((cur_loc, node))
 
             cur_node = self.get_smallest()
@@ -110,7 +148,8 @@ class MazeSolver():
                     cur_loc = item[0]
                     break
 
-        print("\n Path: ", path, "\n")
+        print("\nPath: ", path, "\n")
+        print("Solution: ")
         print(self.maze)
 
 
@@ -130,6 +169,10 @@ class BaseHeuristic():
 class ManhattanHeuristic(BaseHeuristic):
 
     def calculate(self, maze, goal):
+        """
+        Calculate heuristics using Manhattan Distance.
+        Formula: |x1 - x2| + |y1 _ y2|
+        """
         self.maze = maze
 
         goal_x = goal[0]
