@@ -53,7 +53,6 @@ class Maze():
         """
         x = 0
         y = 0
-
         tile_x = 0
         tile_y = 0
 
@@ -69,14 +68,15 @@ class Maze():
         return (tile_x, tile_y)
 
     def get_adjacent(self, node_x, node_y):
+        """
+        Return nodes from above, below, left and right.
+        """
         nodes = []
-        start_x = node_x - 1
-        start_y = node_y - 1
 
-        for x in range(start_x, start_x + 3):
-            for y in range(start_y, start_y + 3):
-                if (x, y) != (node_x, node_y):
-                    nodes.append((x, y))
+        nodes.append((node_x + 1, node_y))
+        nodes.append((node_x - 1, node_y))
+        nodes.append((node_x, node_y + 1))
+        nodes.append((node_x, node_y - 1))
 
         return nodes
 
