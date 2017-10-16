@@ -99,6 +99,10 @@ class MazeSolver():
         goal = self.find_goal()
         start = self.find_start()
 
+        if start == (0, 0) or goal == (0, 0):
+            # If there is no start or goal, return.
+            return
+
         # Use Manhattan Heuristics
         method = ManhattanHeuristic()
         self.calculate_heuristics(method, goal)
