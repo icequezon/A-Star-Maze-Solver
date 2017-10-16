@@ -148,7 +148,8 @@ class MazeSolver():
                     cur_loc = item[0]
                     break
 
-        print("\n Path: ", path, "\n")
+        print("\nPath: ", path, "\n")
+        print("Solution: ")
         print(self.maze)
 
 
