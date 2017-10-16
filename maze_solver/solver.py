@@ -37,6 +37,10 @@ class MazeSolver():
         self.maze = method.calculate(self.maze, goal)
 
     def can_be_visited(self, coordinates):
+        """
+        Check if coordinates can be traversed and
+        not in closed_list.
+        """
         x = coordinates[0]
         y = coordinates[1]
 
@@ -46,6 +50,9 @@ class MazeSolver():
         )
 
     def in_closed_list(self, coordinates):
+        """
+        Checks if coordinates is in closed_list.
+        """
         for item in self.closed_list:
             if item[0] == coordinates:
                 return True
@@ -71,6 +78,9 @@ class MazeSolver():
                 item = (coordinates, cost, heuristics, total)
 
     def get_smallest(self):
+        """
+        Return the smallest value total in open_list.
+        """
         smallest = self.open_list[0]
 
         for item in self.open_list:
@@ -154,6 +164,10 @@ class BaseHeuristic():
 class ManhattanHeuristic(BaseHeuristic):
 
     def calculate(self, maze, goal):
+        """
+        Calculate heuristics using Manhattan Distance.
+        Formula: |x1 - x2| + |y1 _ y2|
+        """
         self.maze = maze
 
         goal_x = goal[0]
