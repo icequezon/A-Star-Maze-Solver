@@ -3,9 +3,6 @@ class Maze():
     """
     This is a representation of a maze
     """
-    # Maze representation
-    maze = []
-
     # Maze tile values
     TILE_TYPES = [
         '%',
@@ -45,11 +42,43 @@ class Maze():
         if self.value_is_valid(value):
             self.maze[y][x] = value
         else:
-            # Throw error
-            # TODO
             return None
 
         return self.maze[y][x]
+
+    def find_tile(self, character):
+        """
+        Finds the goal inside the maze. Returns a
+        pair of coordinates.
+        """
+        x = 0
+        y = 0
+        tile_x = 0
+        tile_y = 0
+
+        for row in self.maze:
+            x = 0
+            for item in row:
+                if item == character:
+                    tile_x = x
+                    tile_y = y
+                x = x + 1
+            y = y + 1
+
+        return (tile_x, tile_y)
+
+    def get_adjacent(self, node_x, node_y):
+        """
+        Return nodes from above, below, left and right.
+        """
+        nodes = []
+
+        nodes.append((node_x + 1, node_y))
+        nodes.append((node_x - 1, node_y))
+        nodes.append((node_x, node_y + 1))
+        nodes.append((node_x, node_y - 1))
+
+        return nodes
 
     def value_is_valid(self, value):
         """
@@ -63,10 +92,12 @@ class Maze():
         Accepts coordinates and return if tile can
         be traversed or not.
         """
-        # TODO
-        pass
+        return self.maze[y][x] != '%'
 
     def __str__(self):
+        """
+        String representation of maze
+        """
         maze_string = ''
         for x in self.maze:
             for y in x:
@@ -77,14 +108,23 @@ class Maze():
 
 
 class WeightedMaze(Maze):
-    weights = [[]]
+
+    def __init__(self, maze):
+        """
+        Initialize WeightedMaze.
+        """
+        self.maze = maze.maze
+        self.weights = []
+        for row in self.maze:
+            length = len(row)
+            self.weights.append(['' for x in range(0, length)])
 
     def get_weight(self, x, y):
         """
         Accepts coordinates and returns weight
         the tile in the maze.
         """
-        return self.weights[x][y]
+        return self.weights[y][x]
 
     def set_weight(self, x, y, value):
         """
@@ -92,6 +132,6 @@ class WeightedMaze(Maze):
         to weight value. Returns the value of the tile
         if set is successful.
         """
-        self.weights[x][y] = value
+        self.weights[y][x] = value
 
-        return self.weights[x][y]
+        return self.weights[y][x]
