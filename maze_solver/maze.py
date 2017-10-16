@@ -3,9 +3,6 @@ class Maze():
     """
     This is a representation of a maze
     """
-    # Maze representation
-    maze = []
-
     # Maze tile values
     TILE_TYPES = [
         '%',
@@ -49,6 +46,40 @@ class Maze():
 
         return self.maze[y][x]
 
+    def find_tile(self, character):
+        """
+        Finds the goal inside the maze. Returns a
+        pair of coordinates.
+        """
+        x = 0
+        y = 0
+
+        tile_x = 0
+        tile_y = 0
+
+        for row in self.maze:
+            x = 0
+            for item in row:
+                if item == character:
+                    tile_x = x
+                    tile_y = y
+                x = x + 1
+            y = y + 1
+
+        return (tile_x, tile_y)
+
+    def get_adjacent(self, node_x, node_y):
+        nodes = []
+        start_x = node_x - 1
+        start_y = node_y - 1
+
+        for x in range(start_x, start_x + 3):
+            for y in range(start_y, start_y + 3):
+                if (x, y) != (node_x, node_y):
+                    nodes.append((x, y))
+
+        return nodes
+
     def value_is_valid(self, value):
         """
         Accepts a value and checks if value is a valid
@@ -61,7 +92,7 @@ class Maze():
         Accepts coordinates and return if tile can
         be traversed or not.
         """
-        return self.maze[y][x] == '%'
+        return self.maze[y][x] != '%'
 
     def __str__(self):
         """
@@ -77,14 +108,16 @@ class Maze():
 
 
 class WeightedMaze(Maze):
-    weights = [[]]
 
-    def __init__(self):
+    def __init__(self, maze):
         """
         Initialize WeightedMaze.
         """
-        maze_width = len(self.maze[0])
-        self.weights = [[0 for x in cols] for cols in range(0, maze_width)]
+        self.maze = maze.maze
+        self.weights = []
+        for row in self.maze:
+            length = len(row)
+            self.weights.append(['' for x in range(0, length)])
 
     def get_weight(self, x, y):
         """
