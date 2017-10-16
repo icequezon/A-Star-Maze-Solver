@@ -51,6 +51,25 @@ class MazeSolver():
                 return True
         return False
 
+    def in_open_list(self, coordinates):
+        """
+        Checks if coordinate is in open_list.
+        """
+        for item in self.open_list:
+            if item[0] == coordinates:
+                return True
+        return False
+
+    def update_open_list(self, coordinates, cost, heuristics, total):
+        """
+        Updates the value of a node in the open_list.
+        If new total is smaller, update node else just
+        maintain old value.
+        """
+        for item in self.open_list:
+            if item[0] == coordinates and item[3] > total:
+                item = (coordinates, cost, heuristics, total)
+
     def get_smallest(self):
         smallest = self.open_list[0]
 
@@ -91,8 +110,13 @@ class MazeSolver():
                 heuristics = self.maze.get_weight(node[0], node[1])
                 total = cost + heuristics
                 if not self.in_closed_list(node):
-                    # coordinates, cost, heuristics, total
-                    self.open_list.append((node, cost, heuristics, total))
+                    if self.in_open_list(node):
+                        # Check if already in open_list
+                        self.update_open_list(node, cost, heuristics, total)
+                    else:
+                        # coordinates, cost, heuristics, total
+                        self.open_list.append((node, cost, heuristics, total))
+
                     self.parent_list.append((cur_loc, node))
 
             cur_node = self.get_smallest()
