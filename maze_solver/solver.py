@@ -192,4 +192,24 @@ class ManhattanHeuristic(BaseHeuristic):
 
 
 class StraightHeuristic(BaseHeuristic):
-    pass
+    def calculate(self, maze, goal):
+        """
+        Calculate heuristics using Manhattan Distance.
+        Formula: |x1 - x2| + |y1 _ y2|
+        """
+        self.maze = maze
+
+        goal_x = goal[0]
+        goal_y = goal[1]
+
+        y = 0
+        for row in maze.maze:
+            x = 0
+            for item in row:
+                weight = math.fabs(goal_x - x) + math.fabs(goal_y - y)
+                maze.set_weight(x, y, weight)
+                x = x + 1
+
+            y = y + 1
+
+        return maze
