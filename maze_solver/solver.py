@@ -1,6 +1,6 @@
 import math
 
-from .maze import WeightedMaze
+from maze_solver.maze import WeightedMaze
 
 
 class MazeSolver():
@@ -105,7 +105,10 @@ class MazeSolver():
 
         # Use Manhattan Heuristics
         method = ManhattanHeuristic()
+        #method = StraightHeuristic()
+        # self.calculate_heuristics(method, goal)
         self.calculate_heuristics(method, goal)
+
 
         cur_loc = (start[0], start[1])
 
@@ -155,7 +158,7 @@ class MazeSolver():
 
 class BaseHeuristic():
 
-    def calculate(self, maze):
+    def calculate(self, maze, goal):
         """
         Accepts a maze and calculates the heuristics
         of the maze.
@@ -192,6 +195,7 @@ class ManhattanHeuristic(BaseHeuristic):
 
 
 class StraightHeuristic(BaseHeuristic):
+<<<<<<< HEAD
     def calculate(self, maze, goal):
         """
         Calculate heuristics using Manhattan Distance.
@@ -213,3 +217,36 @@ class StraightHeuristic(BaseHeuristic):
             y = y + 1
 
         return maze
+=======
+    pass
+
+	# def calculate_straight(self, maze, goal):
+	# 	"""
+	# 	Calculate heuristics using Straight Line Distance.
+	# 	Formula: dx = |x1 - x2|
+	# 			 dy = |y1 - y2|
+	# 			 cost * max(dx,dy)
+	# 	"""
+
+	# 	self.maze = maze
+
+	# 	D = 1
+	# 	goal_x = goal[0]
+	# 	goal_y = goal[1]
+
+	# 	dx = math.fabs(goal_x - x)
+	# 	dy = math.fabs(goal_y - y)
+	# 	y = 0
+	# 	for row in maze.maze:
+	# 		x = 0
+	# 		for item in row:
+	# 			weight =  D * max(dx,dy)
+	# 			maze.set_weight(x, y, weight)
+	# 			x = x + 1
+
+	# 		y = y + 1
+	# 	return maze
+
+
+
+>>>>>>> master
