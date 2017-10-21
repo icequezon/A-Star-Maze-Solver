@@ -22,6 +22,26 @@ Example:
 python main.py location_of_file
 ```
 
+To specify heuristic method, add `-m` or `-s` before specifying the location of your maze.
+
+Manhattan Heuristic: `-m`
+Straight Heuristic: `-s`
+
+Default heuristic method is Manhattan.
+
+Example:
+
+```bash
+# To use Straight heuristic method.
+./main.py -s location_of_file
+
+# To use Manhattan heuristic method.
+./main.py -m location_of_file
+
+# or simply
+./main.py location_of_file
+```
+
 ## Python Version:
 
  - Python 3.6.1
