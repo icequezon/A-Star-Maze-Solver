@@ -1,16 +1,17 @@
 import math
 
-from .maze import WeightedMaze
+from maze_solver.maze import WeightedMaze
 
 
 class MazeSolver():
 
-    def __init__(self, maze):
+    def __init__(self, maze, heuristic_method):
         """
-        Accepts a maze as argument and sets the maze
-        to be solved.
+        Accepts a maze and heuristic method as
+        argument and sets the maze to be solved.
         """
         self.maze = maze
+        self.heuristic_method = heuristic_method
         self.open_list = []
         self.closed_list = []
         self.parent_list = []
@@ -86,7 +87,6 @@ class MazeSolver():
         for item in self.open_list:
             if item[3] < smallest[3]:
                 smallest = item
-
         return smallest
 
     def solve(self):
@@ -103,8 +103,8 @@ class MazeSolver():
             # If there is no start or goal, return.
             return
 
-        # Use Manhattan Heuristics
-        method = ManhattanHeuristic()
+        # Use specified method
+        method = self.heuristic_method
         self.calculate_heuristics(method, goal)
 
         cur_loc = (start[0], start[1])
@@ -139,6 +139,7 @@ class MazeSolver():
 
         path = []
         path.append(cur_loc)
+        cost = cur_node[3]
 
         while cur_loc != start:
             self.maze.set_tile(cur_loc[0], cur_loc[1], '.')
@@ -150,12 +151,13 @@ class MazeSolver():
 
         print("\nPath: ", path, "\n")
         print("Solution: ")
+        print("Cost: ", cost)
         print(self.maze)
 
 
 class BaseHeuristic():
 
-    def calculate(self, maze):
+    def calculate(self, maze, goal):
         """
         Accepts a maze and calculates the heuristics
         of the maze.
@@ -192,4 +194,29 @@ class ManhattanHeuristic(BaseHeuristic):
 
 
 class StraightHeuristic(BaseHeuristic):
-    pass
+    def calculate(self, maze, goal):
+        """
+        Calculate heuristics using Straight Line Distance.
+        Formula: dx = |x1 - x2|
+                 dy = |y1 - y2|
+                 cost * max(dx,dy)
+        """
+
+        self.maze = maze
+
+        D = 1
+        goal_x = goal[0]
+        goal_y = goal[1]
+
+        y = 0
+        for row in maze.maze:
+            x = 0
+            for item in row:
+                dx = math.fabs(goal_x - x)
+                dy = math.fabs(goal_y - y)
+                weight = D * max(dx, dy)
+                maze.set_weight(x, y, weight)
+                x = x + 1
+
+            y = y + 1
+        return maze
