@@ -5,12 +5,13 @@ from maze_solver.maze import WeightedMaze
 
 class MazeSolver():
 
-    def __init__(self, maze):
+    def __init__(self, maze, heuristic_method):
         """
-        Accepts a maze as argument and sets the maze
-        to be solved.
+        Accepts a maze and heuristic method as
+        argument and sets the maze to be solved.
         """
         self.maze = maze
+        self.heuristic_method = heuristic_method
         self.open_list = []
         self.closed_list = []
         self.parent_list = []
@@ -102,8 +103,8 @@ class MazeSolver():
             # If there is no start or goal, return.
             return
 
-        # Use Straigh Heuristics
-        method = StraightHeuristic()
+        # Use specified method
+        method = self.heuristic_method
         self.calculate_heuristics(method, goal)
 
         cur_loc = (start[0], start[1])
