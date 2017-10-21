@@ -139,6 +139,7 @@ class MazeSolver():
 
         path = []
         path.append(cur_loc)
+        cost = cur_node[3]
 
         while cur_loc != start:
             self.maze.set_tile(cur_loc[0], cur_loc[1], '.')
@@ -150,6 +151,7 @@ class MazeSolver():
 
         print("\nPath: ", path, "\n")
         print("Solution: ")
+        print("Cost: ", cost)
         print(self.maze)
 
 
