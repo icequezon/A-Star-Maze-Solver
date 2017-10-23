@@ -131,6 +131,7 @@ class MazeSolver():
         cost = 0
         visited_ctr = 1
         visited_goals = []
+        closed_list_len = 0
 
         while len(goals) > 0:
             self.open_list = []
@@ -174,7 +175,9 @@ class MazeSolver():
             cost = cost + cur_node[2]
 
             back_loc = cur_loc
+            closed_list_len = closed_list_len + len(self.closed_list)
 
+            # Backtrack
             while back_loc != start:
                 if back_loc in all_goals and back_loc not in visited_goals:
                     tile = str(visited_ctr)
@@ -191,6 +194,13 @@ class MazeSolver():
 
         print("\nPath: ", path, "\n")
         print("Cost: ", len(path))
+        print("Closed List: ", closed_list_len)
+
+        # We used parent_list since open_list and parent_list are the same
+        # but we modified the open_list to remove all list that have been
+        # added to the closed list.
+        print("Open List Max Length: ", len(self.parent_list))
+
         print("Solution: ")
         print(self.maze)
 
