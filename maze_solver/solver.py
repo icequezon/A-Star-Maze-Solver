@@ -15,19 +15,42 @@ class MazeSolver():
         self.open_list = []
         self.closed_list = []
         self.parent_list = []
+        self.goals_list = []
 
     def find_goal(self):
         """
         Finds the goal inside the maze. Returns a
         pair of coordinates.
         """
-        return self.maze.find_tile('.')
+        nodes = []
 
+        x = 0
+        y = 0
+
+        for row in self.maze.maze:
+            x = 0
+            for item in row:
+                if item == ".":
+                    tile_x = x
+                    tile_y = y
+                    nodes.append((tile_x, tile_y))
+                x = x + 1
+            y = y + 1
+
+        nodes.sort()
+
+        self.goals_list = nodes
+        print("\n GOALS:")
+        print(self.goals_list)
+
+        return self.goals_list[0]
+        
     def find_start(self):
         """
         Finds the goal inside the maze. Returns a
         pair of coordinates.
-        """
+        """   
+
         return self.maze.find_tile('P')
 
     def calculate_heuristics(self, method, goal):
@@ -54,6 +77,7 @@ class MazeSolver():
         """
         Checks if coordinates is in closed_list.
         """
+        
         for item in self.closed_list:
             if item[0] == coordinates:
                 return True
@@ -63,6 +87,7 @@ class MazeSolver():
         """
         Checks if coordinate is in open_list.
         """
+
         for item in self.open_list:
             if item[0] == coordinates:
                 return True
@@ -152,6 +177,8 @@ class MazeSolver():
         print("\nPath: ", path, "\n")
         print("Solution: ")
         print("Cost: ", cost)
+        print("Number of nodes expanded:", len(self.closed_list))
+        print("Number of nodes in the Open List :", len(self.parent_list))
         print(self.maze)
 
 
