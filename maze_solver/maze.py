@@ -8,6 +8,7 @@ class Maze():
         '%',
         ' ',
         '.',
+        'x',
         'P'
     ]
 
@@ -39,16 +40,16 @@ class Maze():
         value of the tile if set is successful. Throws
         an exception if value in invalid.
         """
-        if self.value_is_valid(value):
-            self.maze[y][x] = value
-        else:
+        if value == '\n':
             return None
+
+        self.maze[y][x] = value
 
         return self.maze[y][x]
 
     def find_tile(self, character):
         """
-        Finds the goal inside the maze. Returns a
+        Finds the tile inside the maze. Returns a
         pair of coordinates.
         """
         x = 0
@@ -66,6 +67,25 @@ class Maze():
             y = y + 1
 
         return (tile_x, tile_y)
+
+    def find_tiles(self, character):
+        """
+        Finds the tiles inside the maze. Returns a
+        list of coordinates.
+        """
+        x = 0
+        y = 0
+        tiles = []
+
+        for row in self.maze:
+            x = 0
+            for item in row:
+                if item == character:
+                    tiles.append((x, y))
+                x = x + 1
+            y = y + 1
+
+        return tiles
 
     def get_adjacent(self, node_x, node_y):
         """
@@ -102,6 +122,8 @@ class Maze():
         for x in self.maze:
             for y in x:
                 maze_string = maze_string + y
+                for x in range(len(y), 4):
+                    maze_string = maze_string + ' '
             maze_string = maze_string + '\n'
 
         return maze_string
@@ -113,7 +135,7 @@ class WeightedMaze(Maze):
         """
         Initialize WeightedMaze.
         """
-        self.maze = maze.maze
+        self.maze = list(maze.maze)
         self.weights = []
         for row in self.maze:
             length = len(row)

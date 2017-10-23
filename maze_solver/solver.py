@@ -21,7 +21,7 @@ class MazeSolver():
         Finds the goal inside the maze. Returns a
         pair of coordinates.
         """
-        return self.maze.find_tile('.')
+        return self.maze.find_tiles('.')
 
     def find_start(self):
         """
@@ -89,6 +89,28 @@ class MazeSolver():
                 smallest = item
         return smallest
 
+    def get_nearest_goal(self, start, goals):
+        """
+        Returns a sorted list of goals based on
+        how near they are to start.
+        """
+        # Get very big number
+        smallest = 100000
+
+        nearest = goals[0]
+        start_x = start[0]
+        start_y = start[1]
+
+        for goal in goals:
+            maze = WeightedMaze(self.maze)
+            maze = self.heuristic_method.calculate(maze, goal)
+
+            if maze.get_weight(start_x, start_y) < smallest:
+                smallest = maze.get_weight(start_x, start_y)
+                nearest = goal
+
+        return nearest
+
     def solve(self):
         """
         Solves the maze. Throws exception if maze is not set of if method
@@ -96,62 +118,90 @@ class MazeSolver():
         """
         self.maze = WeightedMaze(self.maze)
 
-        goal = self.find_goal()
+        goals = self.find_goal()
+        all_goals = list(goals)
         start = self.find_start()
 
-        if start == (0, 0) or goal == (0, 0):
+        if start == (0, 0) or goals == []:
             # If there is no start or goal, return.
             return
 
-        # Use specified method
-        method = self.heuristic_method
-        self.calculate_heuristics(method, goal)
-
         cur_loc = (start[0], start[1])
-
-        # coordinates, cost, heuristics, total
-        cur_node = (cur_loc, 0, 0, 0)
-        while cur_loc != goal:
-            self.closed_list.append(cur_node)
-
-            # Get adjacent nodes
-            possible_visits = self.maze.get_adjacent(cur_loc[0], cur_loc[1])
-            filtered = filter(self.can_be_visited, possible_visits)
-            accepted_visits = list(filtered)
-
-            for node in accepted_visits:
-                cost = cur_node[1] + 1
-                heuristics = self.maze.get_weight(node[0], node[1])
-                total = cost + heuristics
-                if not self.in_closed_list(node):
-                    if self.in_open_list(node):
-                        # Check if already in open_list
-                        self.update_open_list(node, cost, heuristics, total)
-                    else:
-                        # coordinates, cost, heuristics, total
-                        self.open_list.append((node, cost, heuristics, total))
-
-                    self.parent_list.append((cur_loc, node))
-
-            cur_node = self.get_smallest()
-            cur_loc = cur_node[0]
-            self.open_list.remove(cur_node)
-
         path = []
-        path.append(cur_loc)
-        cost = cur_node[3]
+        cost = 0
+        visited_ctr = 1
+        visited_goals = []
+        closed_list_len = 0
 
-        while cur_loc != start:
-            self.maze.set_tile(cur_loc[0], cur_loc[1], '.')
-            for item in self.parent_list:
-                if item[1] == cur_loc:
-                    path.append(item[0])
-                    cur_loc = item[0]
-                    break
+        while len(goals) > 0:
+            self.open_list = []
+            self.closed_list = []
+            goal = self.get_nearest_goal(cur_loc, goals)
+            goals.remove(goal)
+
+            # Use specified method
+            method = self.heuristic_method
+            self.calculate_heuristics(method, goal)
+
+            # coordinates, cost, heuristics, total
+            cur_node = (cur_loc, 0, 0, 0)
+            while cur_loc != goal:
+                self.closed_list.append(cur_node)
+
+                # Get adjacent nodes
+                possible_visits = self.maze.get_adjacent(cur_loc[0], cur_loc[1])
+                filtered = filter(self.can_be_visited, possible_visits)
+                accepted_visits = list(filtered)
+
+                for node in accepted_visits:
+                    cost = cur_node[1] + 1
+                    heuristics = self.maze.get_weight(node[0], node[1])
+                    total = cost + heuristics
+                    if not self.in_closed_list(node):
+                        if self.in_open_list(node):
+                            # Check if already in open_list
+                            self.update_open_list(node, cost, heuristics, total)
+                        else:
+                            # coordinates, cost, heuristics, total
+                            self.open_list.append((node, cost, heuristics, total))
+
+                        self.parent_list.append((cur_loc, node))
+
+                cur_node = self.get_smallest()
+                cur_loc = cur_node[0]
+                self.open_list.remove(cur_node)
+
+            path.append(cur_loc)
+            cost = cost + cur_node[2]
+
+            back_loc = cur_loc
+            closed_list_len = closed_list_len + len(self.closed_list)
+
+            # Backtrack
+            while back_loc != start:
+                if back_loc in all_goals and back_loc not in visited_goals:
+                    tile = str(visited_ctr)
+                    self.maze.set_tile(back_loc[0], back_loc[1], tile)
+                    visited_ctr = visited_ctr + 1
+                    visited_goals.append(back_loc)
+                elif back_loc not in visited_goals:
+                    self.maze.set_tile(back_loc[0], back_loc[1], '.')
+                for item in self.parent_list:
+                    if item[1] == back_loc:
+                        path.append(item[0])
+                        back_loc = item[0]
+                        break
 
         print("\nPath: ", path, "\n")
+        print("Cost: ", len(path))
+        print("Closed List: ", closed_list_len)
+
+        # We used parent_list since open_list and parent_list are the same
+        # but we modified the open_list to remove all list that have been
+        # added to the closed list.
+        print("Open List Max Length: ", len(self.parent_list))
+
         print("Solution: ")
-        print("Cost: ", cost)
         print(self.maze)
 
 
