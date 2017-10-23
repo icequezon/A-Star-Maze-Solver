@@ -21,7 +21,7 @@ class MazeSolver():
         Finds the goal inside the maze. Returns a
         pair of coordinates.
         """
-        return self.maze.find_tile('.')
+        return self.maze.find_tiles('.')
 
     def find_start(self):
         """
