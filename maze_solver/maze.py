@@ -8,6 +8,7 @@ class Maze():
         '%',
         ' ',
         '.',
+        'x',
         'P'
     ]
 
@@ -39,10 +40,10 @@ class Maze():
         value of the tile if set is successful. Throws
         an exception if value in invalid.
         """
-        if self.value_is_valid(value):
-            self.maze[y][x] = value
-        else:
+        if value == '\n':
             return None
+
+        self.maze[y][x] = value
 
         return self.maze[y][x]
 
@@ -121,6 +122,8 @@ class Maze():
         for x in self.maze:
             for y in x:
                 maze_string = maze_string + y
+                for x in range(len(y), 4):
+                    maze_string = maze_string + ' '
             maze_string = maze_string + '\n'
 
         return maze_string
@@ -132,7 +135,7 @@ class WeightedMaze(Maze):
         """
         Initialize WeightedMaze.
         """
-        self.maze = maze.maze
+        self.maze = list(maze.maze)
         self.weights = []
         for row in self.maze:
             length = len(row)
